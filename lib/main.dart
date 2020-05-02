@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'Questionbrain.dart';
 
+Questionbrain questionbrain=Questionbrain();
 void main() => runApp(Quizzler());
 
 class Quizzler extends StatelessWidget {
@@ -26,17 +28,19 @@ class Quizpage extends StatefulWidget {
 
 class _QuizpageState extends State<Quizpage> {
   List<Icon> scoreKeeper = [];
-  List<String> Questions = [
-    'Color of Deepanshu\'s phone is black?',
-    'Color of Deepanshu\'s laptop is black?',
-    'Color of Deepanshu\'s specks is blue?',
-  ];
-  List<bool> answers=[
-    true,
-    false,
-    true,
-  ];
-  int questionnumber = 0;
+  // List<String> Questions = [
+  //   'Color of Deepanshu\'s phone is black?',
+  //   'Color of Deepanshu\'s laptop is black?',
+  //   'Color of Deepanshu\'s specks is blue?',
+  // ];
+  // List<bool> answers=[
+  //   true,
+  //   false,
+  //   true,
+  // ];
+ 
+  
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -47,7 +51,7 @@ class _QuizpageState extends State<Quizpage> {
           flex: 6,
           child: Center(
             child: Text(
-              Questions[questionnumber],
+              questionbrain.getQuestionText(),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 25,
@@ -62,7 +66,7 @@ class _QuizpageState extends State<Quizpage> {
             child: FlatButton(
               color: Colors.green,
               onPressed: () {
-                bool correctanswer= answers[questionnumber];
+                bool correctanswer= questionbrain.getQuestionAnswer();
                 if(correctanswer==true)
                 {
                     scoreKeeper.add(
@@ -76,7 +80,7 @@ class _QuizpageState extends State<Quizpage> {
                     );
                 }
                 setState(() {
-                  questionnumber++;
+                  questionbrain.nextquestion();
                 });
               }, 
               child: Text(
@@ -95,7 +99,7 @@ class _QuizpageState extends State<Quizpage> {
             child: FlatButton(
               color: Colors.red,
               onPressed: () {
-                 bool correctanswer= answers[questionnumber];
+                 bool correctanswer= questionbrain.getQuestionAnswer();
                 if(correctanswer==false)
                 {
                     scoreKeeper.add(
@@ -109,7 +113,7 @@ class _QuizpageState extends State<Quizpage> {
                     );
                 }
                 setState(() {
-                  questionnumber++;
+                 questionbrain.nextquestion();
                 });
               },
               child: Text(
