@@ -6,9 +6,7 @@ class Questionbrain {
   Quizzler obj=Quizzler();
   
   List<Question> _questionbank = [
-    Question(q: 'Color of Deepanshu\'s phone is black?', a: true),
-    Question(q: 'Color of Deepanshu\'s laptop is black?', a: false),
-    Question(q: 'Color of Deepanshu\'s specks is blue?', a: true),
+    
     Question(q: 'Some cats are actually allergic to humans', a: true),
     Question(q: 'You can lead a cow down stairs but not up stairs.', a: false),
     Question(

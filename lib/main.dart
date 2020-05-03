@@ -4,6 +4,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 Questionbrain questionbrain = Questionbrain();
 void main() => runApp(Quizzler());
+int marks = 0, total = 0;
 
 class Quizzler extends StatelessWidget {
   @override
@@ -11,7 +12,11 @@ class Quizzler extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Colors.grey.shade900,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("Quizzler App"),
+        ),
+        backgroundColor: Colors.blue[50],
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -35,6 +40,8 @@ class _QuizpageState extends State<Quizpage> {
     bool correctanswer = questionbrain.getQuestionAnswer();
     setState(() {
       if (correctanswer == userpickedanswer) {
+        marks++;
+        total++;
         scoreKeeper.add(
           Icon(
             Icons.check,
@@ -42,6 +49,7 @@ class _QuizpageState extends State<Quizpage> {
           ),
         );
       } else {
+        total++;
         scoreKeeper.add(
           Icon(
             Icons.close,
@@ -54,20 +62,21 @@ class _QuizpageState extends State<Quizpage> {
       if (value == true) {
         checkdialog();
         questionbrain.reset();
-      scoreKeeper=[];
+        scoreKeeper = [];
+        total = 0;
+        marks = 0;
       }
-      
     });
   }
 
   void checkdialog() {
     Alert(
-        context: context,
-        title: "Quiz Completed Sucessfully",
-        desc: "You have reached at end of the quiz",
-        ).show();
+      context: context,
+      title: "Your Marks = $marks/$total",
+      desc: "You have reached at end of the quiz",
+    ).show();
 
-        questionbrain.reset();
+    questionbrain.reset();
   }
 
   @override
@@ -78,13 +87,19 @@ class _QuizpageState extends State<Quizpage> {
       children: <Widget>[
         Expanded(
           flex: 6,
-          child: Center(
-            child: Text(
-              questionbrain.getQuestionText(),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 25,
-                color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              color: Colors.white,
+              child: Center(
+                child: Text(
+                  questionbrain.getQuestionText(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.black,
+                  ),
+                ),
               ),
             ),
           ),
@@ -93,7 +108,11 @@ class _QuizpageState extends State<Quizpage> {
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: FlatButton(
-              color: Colors.green,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(7.0),
+                side: BorderSide(color: Colors.black),
+              ),
+              color: Colors.lightBlue,
               onPressed: () {
                 checkanswer(true);
               },
@@ -111,7 +130,10 @@ class _QuizpageState extends State<Quizpage> {
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: FlatButton(
-              color: Colors.red,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(7.0),
+                  side: BorderSide(color: Colors.black)),
+              color: Colors.orange,
               onPressed: () {
                 checkanswer(false);
               },
