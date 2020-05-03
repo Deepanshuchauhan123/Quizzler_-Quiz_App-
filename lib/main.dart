@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'Questionbrain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
-Questionbrain questionbrain=Questionbrain();
+Questionbrain questionbrain = Questionbrain();
 void main() => runApp(Quizzler());
 
 class Quizzler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.grey.shade900,
         body: SafeArea(
@@ -28,19 +30,46 @@ class Quizpage extends StatefulWidget {
 
 class _QuizpageState extends State<Quizpage> {
   List<Icon> scoreKeeper = [];
-  // List<String> Questions = [
-  //   'Color of Deepanshu\'s phone is black?',
-  //   'Color of Deepanshu\'s laptop is black?',
-  //   'Color of Deepanshu\'s specks is blue?',
-  // ];
-  // List<bool> answers=[
-  //   true,
-  //   false,
-  //   true,
-  // ];
- 
-  
-  
+
+  void checkanswer(bool userpickedanswer) {
+    bool correctanswer = questionbrain.getQuestionAnswer();
+    setState(() {
+      if (correctanswer == userpickedanswer) {
+        scoreKeeper.add(
+          Icon(
+            Icons.check,
+            color: Colors.green,
+          ),
+        );
+      } else {
+        scoreKeeper.add(
+          Icon(
+            Icons.close,
+            color: Colors.red,
+          ),
+        );
+      }
+
+      bool value = questionbrain.nextquestion();
+      if (value == true) {
+        checkdialog();
+        questionbrain.reset();
+      scoreKeeper=[];
+      }
+      
+    });
+  }
+
+  void checkdialog() {
+    Alert(
+        context: context,
+        title: "Quiz Completed Sucessfully",
+        desc: "You have reached at end of the quiz",
+        ).show();
+
+        questionbrain.reset();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -66,23 +95,8 @@ class _QuizpageState extends State<Quizpage> {
             child: FlatButton(
               color: Colors.green,
               onPressed: () {
-                bool correctanswer= questionbrain.getQuestionAnswer();
-                if(correctanswer==true)
-                {
-                    scoreKeeper.add(
-                     Icon(Icons.check,
-                     color: Colors.green,), 
-                    );
-                }else{
-                  scoreKeeper.add(
-                     Icon(Icons.close,
-                     color: Colors.red,), 
-                    );
-                }
-                setState(() {
-                  questionbrain.nextquestion();
-                });
-              }, 
+                checkanswer(true);
+              },
               child: Text(
                 'True',
                 style: TextStyle(
@@ -99,22 +113,7 @@ class _QuizpageState extends State<Quizpage> {
             child: FlatButton(
               color: Colors.red,
               onPressed: () {
-                 bool correctanswer= questionbrain.getQuestionAnswer();
-                if(correctanswer==false)
-                {
-                    scoreKeeper.add(
-                     Icon(Icons.check,
-                     color: Colors.green,), 
-                    );
-                }else{
-                  scoreKeeper.add(
-                     Icon(Icons.close,
-                     color: Colors.red,), 
-                    );
-                }
-                setState(() {
-                 questionbrain.nextquestion();
-                });
+                checkanswer(false);
               },
               child: Text(
                 'False',
